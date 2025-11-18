@@ -17,16 +17,16 @@
   --color-status-warn: #f59e0b;
   --color-status-error: #ef4444;
   --color-status-info: #06b6d4;
-  --radius-xl: 1.5rem;
-  --radius-xxl: 2rem;
-  --radius-lg: 1rem;
+  --radius-xl: 0.6rem;
+  --radius-xxl: 0.75rem;
+  --radius-lg: 0.5rem;
   --shadow-glass: 0 20px 40px rgba(0, 8, 19, 0.8), 
                   0 0 0 1px rgba(59, 130, 246, 0.1),
                   inset 0 1px 0 rgba(147, 197, 253, 0.1);
   --shadow-glass-hover: 0 25px 50px rgba(0, 8, 19, 0.9),
                         0 0 0 1px rgba(59, 130, 246, 0.2),
                         inset 0 1px 0 rgba(147, 197, 253, 0.2);
-  --font-sans: "Inter", "Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "Roboto Mono", "Menlo", monospace;
   --grid-gutter: 20px;
   --liquid-animation: liquid-flow 8s ease-in-out infinite alternate;
@@ -34,15 +34,29 @@
 }
 
 [data-theme="light"] {
-  --color-bg-base: #f9fbff;
-  --color-bg-glass: rgba(8, 12, 20, 0.06);
-  --color-bg-elevated: rgba(255, 255, 255, 0.85);
-  --color-fg-primary: #0a0c10;
-  --color-fg-muted: #364152;
-  --color-fg-inverted: #f9fbff;
-  --color-accent-primary: #ff3ea5;
-  --color-accent-secondary: #ff8a5b;
-  --color-accent-glow: rgba(255, 62, 165, 0.25);
+  --color-bg-base: #f0f4f8;
+  --color-bg-secondary: #ffffff;
+  --color-bg-glass: rgba(255, 255, 255, 0.8);
+  --color-bg-glass-secondary: rgba(255, 255, 255, 0.6);
+  --color-bg-elevated: rgba(255, 255, 255, 0.95);
+  --color-fg-primary: #1e293b;
+  --color-fg-muted: #64748b;
+  --color-fg-inverted: #ffffff;
+  --color-accent-primary: #3b82f6;
+  --color-accent-secondary: #2563eb;
+  --color-accent-tertiary: #60a5fa;
+  --color-accent-glow: rgba(59, 130, 246, 0.3);
+  --color-accent-glow-secondary: rgba(37, 99, 235, 0.2);
+  --color-status-ok: #10b981;
+  --color-status-warn: #f59e0b;
+  --color-status-error: #ef4444;
+  --color-status-info: #06b6d4;
+  --shadow-glass: 0 4px 20px rgba(0, 0, 0, 0.08), 
+                  0 0 0 1px rgba(0, 0, 0, 0.05),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-glass-hover: 0 8px 30px rgba(0, 0, 0, 0.12),
+                        0 0 0 1px rgba(0, 0, 0, 0.08),
+                        inset 0 1px 0 rgba(255, 255, 255, 1);
   color-scheme: light;
 }
 

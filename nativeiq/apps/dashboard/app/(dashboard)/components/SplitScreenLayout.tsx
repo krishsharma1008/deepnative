@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Approval, Insight, Task, SlaMetric } from "@nativeiq/types";
-import { CommandPalette } from "@nativeiq/ui";
+import { CommandPalette, useTheme } from "@nativeiq/ui";
 import { ChatInterface } from "./ChatInterface";
 import { RoleDashboard } from "./RoleDashboard";
 import { GlassCard, Badge, Button } from "@nativeiq/ui";
 import MarketSuggestions from "./market/MarketSuggestions";
 import AssistantPane from "./AssistantPane";
+import Image from "next/image";
 
 interface UserProfile {
   id: string;
@@ -62,6 +63,7 @@ type SplitScreenLayoutProps = {
 };
 
 export default function SplitScreenLayout({ insights, tasks, approvals, slaMetrics }: SplitScreenLayoutProps) {
+  const { mode, setMode } = useTheme();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [liveInsights, setLiveInsights] = useState(insights);
@@ -72,6 +74,15 @@ export default function SplitScreenLayout({ insights, tasks, approvals, slaMetri
   const [expandedAssistant, setExpandedAssistant] = useState(false);
   const [expandedDashboard, setExpandedDashboard] = useState(false);
   const [lastUserMessage, setLastUserMessage] = useState<string>("");
+  const [companyName, setCompanyName] = useState("");
+
+  useEffect(() => {
+    // Read company name from localStorage
+    if (typeof window !== 'undefined') {
+      const storedCompany = localStorage.getItem("nativeiq_company");
+      setCompanyName(storedCompany || "IQ");
+    }
+  }, []);
 
   const handleInsightGenerated = (newInsight: any) => {
     const insight: Insight = {
@@ -134,10 +145,29 @@ export default function SplitScreenLayout({ insights, tasks, approvals, slaMetri
       {/* Header with Navigation */}
       <header className="magical-header">
         <div className="magical-header__brand">
-          <div className="magical-logo">✨ NativeIQ</div>
+          <div className="magical-logo">
+            <Image 
+              src="/logo.png" 
+              alt="Native Logo" 
+              width={28}
+              height={28}
+              style={{ 
+                marginRight: '8px',
+                verticalAlign: 'middle'
+              }} 
+            />
+            <span>{companyName}: Native</span>
+          </div>
           <div className="magical-tagline">Intelligent Business Insights</div>
         </div>
         <div className="magical-header__user">
+          <button
+            onClick={() => setMode(mode === "dark" ? "light" : "dark")}
+            className="magical-theme-toggle"
+            title={`Switch to ${mode === "dark" ? "light" : "dark"} mode`}
+          >
+            {mode === "dark" ? "🌙" : "☀️"}
+          </button>
           <div className="magical-user-selector">
             <select
               value={currentUser.id}

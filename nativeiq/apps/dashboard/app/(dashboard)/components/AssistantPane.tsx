@@ -56,13 +56,21 @@ export function AssistantPane({
   const [insights, setInsights] = useState<AssistantInsight[]>(INITIAL_INSIGHTS);
   const [isGenerating, setIsGenerating] = useState(false);
   const insightsEndRef = useRef<HTMLDivElement>(null);
+  const shouldScrollRef = useRef(false);
 
-  const scrollToBottom = () => {
-    insightsEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToTop = () => {
+    const container = document.querySelector('.assistant-pane__content');
+    if (container) {
+      container.scrollTop = 0;
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Only scroll when we explicitly set the flag during new insight generation
+    if (shouldScrollRef.current) {
+      scrollToTop();
+      shouldScrollRef.current = false;
+    }
   }, [insights]);
 
   // Generate new insight when user message changes
@@ -74,6 +82,7 @@ export function AssistantPane({
 
   const generateInsight = async (message: string) => {
     setIsGenerating(true);
+    shouldScrollRef.current = true; // Enable scroll for this new insight
     
     // Simulate AI processing delay
     await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 1000));
