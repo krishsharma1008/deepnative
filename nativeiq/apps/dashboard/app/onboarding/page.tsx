@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import { GlassCard, Button } from "@nativeiq/ui";
 
-type Step = 1 | 2 | 3;
+type Step = 1 | 2 | 3 | 4;
 
 export default function OnboardingPage() {
   const [step, setStep] = useState<Step>(1);
   const [company, setCompany] = useState("");
   const [industry, setIndustry] = useState("food");
   const [role, setRole] = useState("Founder & CEO");
+  const [teammates, setTeammates] = useState<string[]>([""]);
 
   useEffect(() => {
     const authed = typeof window !== 'undefined' && localStorage.getItem("nativeiq_authed");
@@ -18,14 +19,32 @@ export default function OnboardingPage() {
     }
   }, []);
 
-  const next = () => setStep((s) => (s === 3 ? 3 : ((s + 1) as Step)));
+  const next = () => setStep((s) => (s === 4 ? 4 : ((s + 1) as Step)));
   const back = () => setStep((s) => (s === 1 ? 1 : ((s - 1) as Step)));
+
+  const addTeammateField = () => {
+    setTeammates([...teammates, ""]);
+  };
+
+  const updateTeammate = (index: number, value: string) => {
+    const updated = [...teammates];
+    updated[index] = value;
+    setTeammates(updated);
+  };
+
+  const removeTeammate = (index: number) => {
+    if (teammates.length > 1) {
+      const updated = teammates.filter((_, i) => i !== index);
+      setTeammates(updated);
+    }
+  };
 
   const finish = () => {
     localStorage.setItem("nativeiq_onboarded", "true");
     localStorage.setItem("nativeiq_company", company);
     localStorage.setItem("nativeiq_industry", industry);
     localStorage.setItem("nativeiq_role", role);
+    localStorage.setItem("nativeiq_teammates", JSON.stringify(teammates.filter(email => email.trim())));
     window.location.href = "/";
   };
 
@@ -73,6 +92,44 @@ export default function OnboardingPage() {
               <option>Sales Manager</option>
               <option>Customer Success</option>
             </select>
+            <div className="onb-actions">
+              <Button variant="secondary" onClick={back}>Back</Button>
+              <Button variant="primary" onClick={next}>Continue</Button>
+            </div>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="onb-step">
+            <label className="auth-label">Invite your teammates (optional)</label>
+            {teammates.map((email, index) => (
+              <div key={index} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                <input
+                  className="auth-input"
+                  type="email"
+                  placeholder="teammate@company.com"
+                  value={email}
+                  onChange={(e) => updateTeammate(index, e.target.value)}
+                  style={{ flex: 1 }}
+                />
+                {teammates.length > 1 && (
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => removeTeammate(index)}
+                    style={{ padding: '0.65rem 1rem' }}
+                  >
+                    ✕
+                  </Button>
+                )}
+              </div>
+            ))}
+            <Button 
+              variant="secondary" 
+              onClick={addTeammateField}
+              style={{ width: '100%', marginTop: '0.5rem' }}
+            >
+              + Add Another
+            </Button>
             <div className="onb-actions">
               <Button variant="secondary" onClick={back}>Back</Button>
               <Button variant="primary" onClick={finish}>Finish</Button>
